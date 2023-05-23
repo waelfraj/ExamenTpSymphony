@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+
+    <table class="table table-hover table-striped" border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Titre</th>
+        <th>Type</th>
+        <th>Nombre de joueur</th>
+        <th>Editeur</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for game in games %}
+        <tr>
+            <td>{{ game.id }}</td>
+            <td><img src={{ game.image.getUrl }} style="height:50px"></img></td>
+            <td>{{ game.titre }}</td>
+            <td>{{ game.type }}</td>
+            <td>{{ game.nbrJoueur }}</td>
+            <td>{{ game.editeur }}</td>
+            <td>
+                <a class="btn btn-primary" href="#">Ajouter</a>
+                <a class="btn btn-success"  href="#">Modifier</a>
+                <a class="btn btn-danger" href={{ path('delete_game', {'id':game.id }) }}>Supprimer</a>
+                <a class="btn btn-info" href="{{ path('show_game', {'id': game.id}) }}">Detail</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

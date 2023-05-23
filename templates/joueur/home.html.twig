@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+{% block title %}Joueurs{% endblock %}
+
+{% block body %}
+<h2>Liste des Joueurs | <small> <a href="{{ path('ajouter_joueur')}}">Ajouter</a>
+</small></h2>
+{% for msg in app.flashes('notice') %}
+{{ msg }}
+{% endfor %}
+
+    <table class="table table-hover table-striped" border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Date naissance</th>
+        <th>Score</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for joueur in joueurs %}
+        <tr>
+            <td>{{joueur.id}}</td>
+            <td>{{joueur.nom}}</td>
+            <td>{{ joueur.bornAt|date('d/m/Y') }}</td>
+            <td>{{joueur.score}}</td>
+         
+            <td>
+                <a class="btn btn-success"  href={{ path('modifier_joueur', {'id':joueur.id }) }}>Modifier</a>
+                <a class="btn btn-danger" href={{ path('delete_joueur', {'id':joueur.id }) }}>Supprimer</a>
+                <a class="btn btn-info" href="{{ path('show_joueur', {'id': joueur.id}) }}">Detail</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,6 @@
+# config/routes.yaml
+index:
+  path: /
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: "base.html.twig"
