@@ -19,7 +19,7 @@ class GameType extends AbstractType
             ->add('type')
             ->add('nbr_joueur')
             ->add('editeur')
-            ->add('image', FileType::class)
+            // ->add('image', FileType::class)
             ->add('Valider', SubmitType::class)
         ;
     }

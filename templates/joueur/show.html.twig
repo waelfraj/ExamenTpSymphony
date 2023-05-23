@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{joueur.nom}}{% endblock %}
+{% block title %}{{ joueur.nom }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<h2>
-Nom : {{joueur.nom}}</h2>
-<h2>
-Email : {{joueur.email}}</h2>
-<h2>
-Date naissance : {{ joueur.bornAt|date('d/m/Y') }}</h2>
-<h2>Score : {{joueur.score}}</h2>
+<div class="container">
+    <div class="text-center">
+        <div class="panel panel-default" style="max-width: 500px; margin: 0 auto;">
+            <div class="panel-heading">
+                <h2>{{ joueur.nom }}</h2>
+            </div>
+            <div class="panel-body">
+                <h5 class="card-title">Email: {{ joueur.email }}</h5>
+                <h5 class="card-title">Date de naissance: {{ joueur.bornAt|date('d/m/Y') }}</h5>
+                <h5 class="card-title">Score: {{ joueur.score }}</h5>
+                <h5 class="card-title">Jeu: {{ joueur.game.titre }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

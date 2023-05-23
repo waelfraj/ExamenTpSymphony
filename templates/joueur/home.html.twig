@@ -2,30 +2,36 @@
 {% block title %}Joueurs{% endblock %}
 
 {% block body %}
+<div class="container">
 <h2>Liste des Joueurs | <small> <a href="{{ path('ajouter_joueur')}}">Ajouter</a>
 </small></h2>
 {% for msg in app.flashes('notice') %}
-{{ msg }}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ msg }}
+</div>
 {% endfor %}
-
-    <table class="table table-hover table-striped" border="1">
+<p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par nom, date naissance , score ou jeux :</p>  
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th>ID</th>
         <th>Nom</th>
         <th>Date naissance</th>
         <th>Score</th>
+        <th>Jeux</th>
         <th>Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
     {% for joueur in joueurs %}
         <tr>
             <td>{{joueur.id}}</td>
             <td>{{joueur.nom}}</td>
             <td>{{ joueur.bornAt|date('d/m/Y') }}</td>
             <td>{{joueur.score}}</td>
-         
+            <td>{{ joueur.game.titre }}</td>
             <td>
                 <a class="btn btn-success"  href={{ path('modifier_joueur', {'id':joueur.id }) }}>Modifier</a>
                 <a class="btn btn-danger" href={{ path('delete_joueur', {'id':joueur.id }) }}>Supprimer</a>
@@ -35,4 +41,19 @@
     {% endfor %}
     </tbody>
 </table>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
+
 {% endblock %}

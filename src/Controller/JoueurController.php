@@ -16,13 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class JoueurController extends AbstractController
 {
-    #[Route('/joueur', name: 'app_joueur')]
-    public function index(): Response
-    {
-        return $this->render('joueur/index.html.twig', [
-            'controller_name' => 'JoueurController',
-        ]);
-    }
+
 
     #[Route('/joueurs/{id}', name: 'show_joueur')]
 
@@ -55,21 +49,34 @@ class JoueurController extends AbstractController
         ]);
     }
 
-    #[Route('joueurs/ajouter/new', name: 'ajouter_joueur')]
+    #[Route('joueurs/add/new', name: 'ajouter_joueur')]
 
     public function ajouter(Request $request)
     {
         $joueur = new Joueur();
         $fb = $this->createFormBuilder($joueur)
-            ->add('nom', TextType::class)
-            ->add('email', TextType::class)
-            ->add('born_at', DateType::class)
-            ->add('score', TextType::class)
+            ->add('nom', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('email', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('born_at', DateType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('score', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
             ->add('game', EntityType::class, [
                 'class' => Game::class,
                 'choice_label' => 'titre',
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px']
             ])
-            ->add('valider', SubmitType::class);
+            ->add('valider', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary', 'style' => 'margin-top: 10px']
+            ]);
+
+
         $form = $fb->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -77,7 +84,7 @@ class JoueurController extends AbstractController
             $em->persist($joueur);
             $em->flush();
             $session = new Session();
-            $session->getFlashBag()->add('notice', 'candidat ajouté avec success');
+            $session->getFlashBag()->add('notice', 'Joueur ajouté avec success');
             return $this->redirectToRoute('list_joueurs');
         }
 
@@ -87,7 +94,7 @@ class JoueurController extends AbstractController
         );
     }
 
-    #[Route('joueurs/modifier/{id}', name: 'modifier_joueur')]
+    #[Route('joueurs/edit/{id}', name: 'modifier_joueur')]
 
     public function edit(Request $request, $id)
     {
@@ -101,21 +108,34 @@ class JoueurController extends AbstractController
             );
         }
         $fb = $this->createFormBuilder($joueur)
-            ->add('nom', TextType::class)
-            ->add('email', TextType::class)
-            ->add('born_at', DateType::class)
-            ->add('score', TextType::class)
+            ->add('nom', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('email', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('born_at', DateType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
+            ->add('score', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
+            ])
             ->add('game', EntityType::class, [
                 'class' => Game::class,
                 'choice_label' => 'titre',
+                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px']
             ])
-            ->add('valider', SubmitType::class);
+            ->add('valider', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary', 'style' => 'margin-top: 10px']
+            ]);
 
         $form = $fb->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+            $session = new Session();
+            $session->getFlashBag()->add('notice', 'Joueur modifié avec success');
             return $this->redirectToRoute('list_joueurs');
         }
         return $this->render(
@@ -125,7 +145,7 @@ class JoueurController extends AbstractController
     }
 
 
-    #[Route('/joueurs/supp/{id}', name: 'delete_joueur')]
+    #[Route('/joueurs/delete/{id}', name: 'delete_joueur')]
 
     public function delete(Request $request, $id): Response
     {
