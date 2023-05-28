@@ -3,36 +3,71 @@
 {% block title %}Hello GameController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<h2>
-<img src={{game.image.getUrl()}} style="height:100px"></img>
-titre : {{game.titre}}
-type : {{game.type}}
-nombre de joueur : {{game.nbrJoueur}}
-editeur : {{game.editeur}}</h2>
-<h2>Joueurs</h2>
-<table>
-    <thead>
-        <tr>
-            <td>Nom</td>
-            <td>Email</td>
-            <td>Date naissance</td>
-            <td>Score</td>
-        </tr>
-        </thead
-    <tbody>
-        {% for joueur in listejoueurs %}
-            <tr>
-            <td>{{ joueur.nom }}</td>
-            <td>{{ joueur.email }}</td>
-            <td>{{ joueur.bornAt | date('d-m-Y') }}</td>
-            <td>{{ joueur.score }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-        {% endblock %}
+<div class="container">
+    <img src="{{ publicPath ~ game.image }}" style="width:100%; height:250px" alt="Image du jeu">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default text-center" >
+                <div class="panel-heading">
+                    <h2>{{ game.titre }}</h2>      
+                </div>
+                <div class="panel-body">
+                <h3>
+                    Type : <strong>{{ game.type }}</strong>
+                </h3>
+                <h3>
+                    Nombre de joueurs : <strong>{{ game.nbrJoueur }}</strong>
+                </h3>
+                <h3>
+                    Éditeur : <strong>{{ game.editeur }}</strong>
+                </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <h2>Liste Joueurs</h2>
+                </div>
+            <div class="panel-body">
+                <p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par nom, date naissance , score ou jeux :</p>  
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Date de naissance</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        {% for joueur in listejoueurs %}
+                            <tr>
+                                <td>{{ joueur.nom }}</td>
+                                <td>{{ joueur.email }}</td>
+                                <td>{{ joueur.bornAt | date('d-m-Y') }}</td>
+                                <td>{{ joueur.score }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
+{% endblock %}

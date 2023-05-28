@@ -1,19 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ joueur.nom }}{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+
+<style>
+    .item{
+        margin-top:8%
+    }
+</style>
+{% endblock %}
 
 {% block body %}
 <div class="container">
-    <div class="text-center">
+    <div class="text-center item">
         <div class="panel panel-default" style="max-width: 500px; margin: 0 auto;">
             <div class="panel-heading">
-                <h2>{{ joueur.nom }}</h2>
+                <h1>{{ joueur.nom }}</h1>
             </div>
             <div class="panel-body">
-                <h5 class="card-title">Email: {{ joueur.email }}</h5>
-                <h5 class="card-title">Date de naissance: {{ joueur.bornAt|date('d/m/Y') }}</h5>
-                <h5 class="card-title">Score: {{ joueur.score }}</h5>
-                <h5 class="card-title">Jeu: {{ joueur.game.titre }}</h5>
+                <h3 class="card-title">Email: {{ joueur.email }}</h3>
+                <h3 class="card-title">Date de naissance: {{ joueur.bornAt|date('d/m/Y') }}</h3>
+                <h3 class="card-title">Score: {{ joueur.score }}</h3>
+                <h3 class="card-title">Jeu: {{ joueur.game.titre }}</h3>
             </div>
         </div>
     </div>

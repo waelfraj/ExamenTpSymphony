@@ -16,43 +16,65 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     {% endblock %}
 </head>
+
+<style>
+  body {
+    font: 20px Montserrat, sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+  .bg-1 { 
+    background-color: #2649AB; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 { 
+    background-color: #ffffff; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 { 
+    background-color: #2649AB; /* White */
+    color: #fff;
+  }
+
+  .container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+  .navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px;
+  }
+  .navbar-nav  li a:hover {
+    color: #1abc9c !important;
+  }
+  ul.no-bullets {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    .container{
+      color:black;
+  }
+  
+  </style>
+
 <body>
     
-<nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>                        
-        </button>
-        <a class="navbar-brand" href={{path('home')}}>Wael FRAJ</a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JEUX <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href={{ path('list_games') }}>LISTE</a></li>
-                    <li><a href={{ path('ajouter_game') }}>AJOUTER</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JOUEURS <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href={{ path('list_joueurs') }}>LISTE</a></li>
-                    <li><a href={{ path('ajouter_joueur') }}>AJOUTER</a></li>
-                </ul>
-              </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
-    </div>
-</nav>
-{% block titre %}
-    {% if app.request.attributes.get('_route') == 'home' %}
+{% block navbar %}
+    {% if app.request.attributes.get('_route') != 'login' and app.request.attributes.get('_route') !='user_registration' %}
+    {% include 'navbar.html.twig' %}
+    {% endif %}
+{% endblock %}
+{% block acceuil %}
+    {% if app.request.attributes.get('_route') == 'app_admin' %}
         {% include 'accueil.html.twig' %}
     {% endif %}
 {% endblock %}

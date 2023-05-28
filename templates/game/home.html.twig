@@ -2,15 +2,20 @@
 {% block title %}Games{% endblock %}
 
 {% block body %}
+<div class="container">
+
 <h2>Liste des Games | <small> <a href="{{ path('ajouter_game')}}">Ajouter</a>
 </small></h2>
 {% for msg in app.flashes('notice') %}
-    <div class="alert alert-success">
-        {{ msg }}
-    </div>
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <span style="font-size:16px"> {{ msg }} </span>
+</div>
 {% endfor %}
-
-    <table class="table table-hover table-striped" border="1">
+<p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par nom, date naissance , score ou jeux :</p>  
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+ 
+<table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th>ID</th>
@@ -22,11 +27,13 @@
         <th>Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
     {% for game in games %}
         <tr>
             <td>{{ game.id }}</td>
-            <td><img src={{ game.image.getUrl }} style="height:50px"></img></td>
+            
+
+            <td><img src="{{ publicPath ~ game.image }}" style="height:50px"></img></td>
             <td>{{ game.titre }}</td>
             <td>{{ game.type }}</td>
             <td>{{ game.nbrJoueur }}</td>
@@ -40,4 +47,18 @@
     {% endfor %}
     </tbody>
 </table>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
 {% endblock %}

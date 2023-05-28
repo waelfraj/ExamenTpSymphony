@@ -8,7 +8,7 @@
 {% for msg in app.flashes('notice') %}
 <div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{ msg }}
+    <span style="font-size:16px"> {{ msg }} </span>
 </div>
 {% endfor %}
 <p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par nom, date naissance , score ou jeux :</p>  

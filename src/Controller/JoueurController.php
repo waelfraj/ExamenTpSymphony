@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class JoueurController extends AbstractController
 {
@@ -54,33 +56,15 @@ class JoueurController extends AbstractController
     public function ajouter(Request $request)
     {
         $joueur = new Joueur();
-        $fb = $this->createFormBuilder($joueur)
-            ->add('nom', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('email', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('born_at', DateType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('score', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('game', EntityType::class, [
-                'class' => Game::class,
-                'choice_label' => 'titre',
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px']
-            ])
-            ->add('valider', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary', 'style' => 'margin-top: 10px']
-            ]);
+        $form = $this->createForm("App\Form\JoueurType", $joueur);
 
-
-        $form = $fb->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
+            if (null === $joueur->getScore() || !is_numeric($joueur->getScore())) {
+                // Set a default value or handle the error condition
+                $joueur->setScore(0);
+            }
             $em->persist($joueur);
             $em->flush();
             $session = new Session();
@@ -107,32 +91,16 @@ class JoueurController extends AbstractController
                 'No joueur found for id ' . $id
             );
         }
-        $fb = $this->createFormBuilder($joueur)
-            ->add('nom', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('email', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('born_at', DateType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('score', TextType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-            ->add('game', EntityType::class, [
-                'class' => Game::class,
-                'choice_label' => 'titre',
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px']
-            ])
-            ->add('valider', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary', 'style' => 'margin-top: 10px']
-            ]);
+        $form = $this->createForm("App\Form\JoueurType", $joueur);
 
-        $form = $fb->getForm();
+
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if (null === $joueur->getScore() || !is_numeric($joueur->getScore())) {
+                // Set a default value or handle the error condition
+                $joueur->setScore(0);
+            }
             $entityManager->flush();
             $session = new Session();
             $session->getFlashBag()->add('notice', 'Joueur modifié avec success');
@@ -159,8 +127,9 @@ class JoueurController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($c);
-
         $entityManager->flush();
+        $session = new Session();
+        $session->getFlashBag()->add('notice', 'Joueur supprimé avec success');
         return $this->redirectToRoute('list_joueurs');
     }
 }

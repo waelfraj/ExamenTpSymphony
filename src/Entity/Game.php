@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Image;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -26,8 +25,9 @@ class Game
     #[ORM\Column(type: "string", length: 255)]
     private ?string $editeur = null;
 
-    #[ORM\OneToOne(targetEntity: Image::class, cascade: ["persist", "remove"])]
-    private ?Image $image = null;
+    #[ORM\Column(length: 255)]
+    private ?string $image;
+
 
     public function getId(): ?int
     {
@@ -78,14 +78,18 @@ class Game
         return $this;
     }
 
-    public function getImage(): ?Image
+    /**
+     * @return mixed
+     */
+    public function getImage()
     {
         return $this->image;
     }
-
-    public function setImage(?Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
-        return $this;
     }
 }

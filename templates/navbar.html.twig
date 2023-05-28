@@ -1,0 +1,37 @@
+<nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href={{path('app_admin')}}>Wael FRAJ</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JEUX <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href={{ path('list_games') }}>LISTE</a></li>
+                    <li><a href={{ path('ajouter_game') }}>AJOUTER</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JOUEURS <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href={{ path('list_joueurs') }}>LISTE</a></li>
+                    <li><a href={{ path('ajouter_joueur') }}>AJOUTER</a></li>
+                </ul>
+              </li>
+              <li>
+             
+              <a href="{{ path('security_logout') }}">SE DÉCONNECTER</a>
+              </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    </div>
+</nav>
