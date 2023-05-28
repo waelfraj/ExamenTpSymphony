@@ -28,6 +28,8 @@ class Joueur
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+
+
     private ?Game $Game = null;
 
     public function getId(): ?int

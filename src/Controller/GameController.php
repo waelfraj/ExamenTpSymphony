@@ -150,7 +150,7 @@ class GameController extends AbstractController
             } else {
                 $game->setImage($originalImage); // Preserve the original image if no new image is selected
             }
-          
+
             
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
@@ -169,18 +169,17 @@ class GameController extends AbstractController
 
     public function delete(Request $request, $id): Response
     {
-        $c = $this->getDoctrine()->getRepository(Game::class)
-            ->find($id);
-        if (!$c) {
-            throw $this->createNotFoundException(
-                'no game found for id' . $id
-            );
-        }
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($c);
+        $game = $entityManager->getRepository(Game::class)->find($id);
+        if (!$game) {
+            throw $this->createNotFoundException('No game found for id ' . $id);
+        }
+        $joueurs = $entityManager->getRepository(Joueur::class)->findBy(['Game' => $game]);
+        foreach ($joueurs as $joueur) {
+            $entityManager->remove($joueur);
+        }
+        $entityManager->remove($game);
         $entityManager->flush();
-        $session = new Session();
-        $session->getFlashBag()->add('notice', 'Game supprimé avec success');
         return $this->redirectToRoute('list_games');
     }
 

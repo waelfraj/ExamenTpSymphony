@@ -27,7 +27,7 @@ class Game
 
     #[ORM\Column(length: 255)]
     private ?string $image;
-
+ 
 
     public function getId(): ?int
     {
