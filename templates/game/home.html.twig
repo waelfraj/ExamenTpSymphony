@@ -3,7 +3,6 @@
 
 {% block body %}
 <div class="container">
-
 <h2>Liste des Games | <small> <a href="{{ path('ajouter_game')}}">Ajouter</a>
 </small></h2>
 {% for msg in app.flashes('notice') %}
@@ -12,36 +11,34 @@
     <span style="font-size:16px"> {{ msg }} </span>
 </div>
 {% endfor %}
-<p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par nom, date naissance , score ou jeux :</p>  
+<p>Tapez quelque chose dans le champ de saisie pour rechercher dans le tableau par titre, type , nombre de joueur ou editeur :</p>  
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
  
-<table class="table table-bordered table-striped">
+<table class="table table-hover table-bordered ">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>#</th>
         <th>Image</th>
         <th>Titre</th>
         <th>Type</th>
         <th>Nombre de joueur</th>
         <th>Editeur</th>
-        <th>Actions</th>
+        <th >Actions</th>
     </tr>
     </thead>
     <tbody id="myTable">
-    {% for game in games %}
-        <tr>
-            <td>{{ game.id }}</td>
-            
-
+    {% for game in games |reverse %}
+        <tr style="font-size:16px">
+            <td>{{ loop.index }}</td>
             <td><img src="{{ publicPath ~ game.image }}" style="height:50px"></img></td>
             <td>{{ game.titre }}</td>
             <td>{{ game.type }}</td>
             <td>{{ game.nbrJoueur }}</td>
             <td>{{ game.editeur }}</td>
             <td>
-                <a class="btn btn-success"  href={{ path('edit_game', {'id':game.id }) }}>Modifier</a>
-                <a class="btn btn-danger" href={{ path('delete_game', {'id':game.id }) }}>Supprimer</a>
-                <a class="btn btn-info" href="{{ path('show_game', {'id': game.id}) }}">Detail</a>
+                <a class="btn btn-success"  href={{ path('edit_game', {'id':game.id }) }}><span class="glyphicon glyphicon-edit"></span></a>
+                <a class="btn btn-danger" href={{ path('delete_game', {'id':game.id }) }}><span class="glyphicon glyphicon-trash"></span></a>
+                <a class="btn btn-info" href="{{ path('show_game', {'id': game.id}) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
             </td>
         </tr>
     {% endfor %}

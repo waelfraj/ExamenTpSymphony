@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Game;
-use App\Entity\Image;
 use App\Entity\Joueur;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -73,7 +70,9 @@ class GameController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             if ($image) {
-                $imageName = $game->getTitre() . '.' . $image->guessExtension();
+                $titre = $game->getTitre();
+                $titreSansCaracteresSpeciaux = preg_replace('/[^\w\s-]/', '', $titre);
+                $imageName = str_replace(' ', '-', $titreSansCaracteresSpeciaux) . '.' . $image->guessExtension();
                 $image->move($publicPath, $imageName);
                 $game->setImage($imageName);
             }
@@ -84,7 +83,7 @@ class GameController extends AbstractController
             $em->persist($game);
             $em->flush();
             $session = new Session();
-            $session->getFlashBag()->add('notice', 'Game ajouté avec success');
+            $session->getFlashBag()->add('notice', 'Game ajouter avec success');
             return $this->redirectToRoute('list_games');
         }
 
@@ -122,19 +121,14 @@ class GameController extends AbstractController
             ->add('type', TextType::class, [
                 'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
             ])
-            ->add('nbrJoueur', NumberType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
-            ])
-
             ->add('editeur', TextType::class, [
                 'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px']
             ])
             ->add('image', FileType::class, [
                 'attr' => ['style' => 'margin-top: 10px;margin-bottom:10px'],
                 'data_class' => null,
-                'required'   => false,
+                'required' => false,
             ])
-
             ->add('valider', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary', 'style' => 'margin-top: 10px']
             ]); // générer le formulaire à partir du FormBuilder
@@ -142,21 +136,23 @@ class GameController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
-    
+
             if ($image) {
-                $imageName = $game->getTitre() . '.' . $image->guessExtension();
+                $titre = $game->getTitre();
+                $titreSansCaracteresSpeciaux = preg_replace('/[^\w\s-]/', '', $titre);
+                $imageName = str_replace(' ', '-', $titreSansCaracteresSpeciaux) . '.' . $image->guessExtension();
                 $image->move($publicPath, $imageName);
                 $game->setImage($imageName);
             } else {
                 $game->setImage($originalImage); // Preserve the original image if no new image is selected
             }
 
-            
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
-    
+
             $session = new Session();
-            $session->getFlashBag()->add('notice', 'Game modifié avec succès');
+            $session->getFlashBag()->add('notice', 'Game modifier avec succès');
             return $this->redirectToRoute('list_games');
         }
         return $this->render(
@@ -180,6 +176,9 @@ class GameController extends AbstractController
         }
         $entityManager->remove($game);
         $entityManager->flush();
+        $session = new Session();
+        $session->getFlashBag()->add('notice', 'Game supprimer avec succès');
+
         return $this->redirectToRoute('list_games');
     }
 

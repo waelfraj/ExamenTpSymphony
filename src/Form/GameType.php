@@ -30,12 +30,6 @@ class GameType extends AbstractType
                 'required' => true
 
             ])
-            ->add('nbrJoueur', NumberType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px'],
-                'required' => true,
-
-            ])
-
             ->add('editeur', TextType::class, [
                 'attr' => ['class' => 'form-control', 'style' => 'margin-top: 10px;margin-bottom:10px'],
                 'required' => true
